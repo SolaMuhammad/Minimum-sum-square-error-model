@@ -1,0 +1,31 @@
+function [ number ] = MSSETest(  name, numOfSectors, numOfTracks )
+%UNTITLED2 Summary of this function goes here
+%   Detailed explanation goes here
+
+w = dlmread('weights.txt');
+%Get the feature vector for the unknown sample
+I = getChaninCodeFV( name, numOfSectors, numOfTracks );
+I= I.' ;
+[rows,columns] = size(I) ;
+I(1,columns+1) = 1 ;
+FVMatrix = dlmread('cols.txt');
+positive = 0 ;
+
+number = 1000 ;
+for i = 0:9
+    
+    di = I*w(:,i+1) 
+    if di > 0
+        number = i ;
+        positive = positive + 1 ;
+    end
+end
+if positive > 1
+    sprintf('Undetermined');
+elseif positive == 0
+    sprintf('new class');
+else
+    number
+end
+end
+
